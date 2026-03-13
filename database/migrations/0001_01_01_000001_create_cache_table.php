@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Tabel Cache Standar Laravel
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
-            $table->integer('expiration')->index();
+            $table->integer('expiration');
         });
 
+        // Tabel Cache Locks Standar Laravel
         Schema::create('cache_locks', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
-            $table->integer('expiration')->index();
+            $table->integer('expiration');
         });
     }
 

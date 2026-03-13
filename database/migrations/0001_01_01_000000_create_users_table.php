@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        // Tabel 1: Users
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Ini bigint(20) unsigned secara otomatis
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -21,6 +19,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Tabel 2: Products
+        Schema::create('products', function (Blueprint $table) {
+            $table->id(); 
+            $table->string('name');
+            $table->integer('qty');
+            $table->decimal('price', 15, 2);
+            // foreignId secara otomatis membuat tipe data yang SAMA dengan id di tabel users
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        // Tabel bawaan Laravel (biarkan saja)
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -37,13 +47,11 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('products');
+        Schema::dropIfExists('users');
     }
 };
